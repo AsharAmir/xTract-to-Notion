@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
         html += `<h2>${line.substring(3)}</h2>`;
       } else if (line.startsWith('* ')) {
         html += `<ul><li>${line.substring(2)}</li></ul>`;
+      } else if (line.startsWith('**')) {
+        html += `<p><strong>${line.substring(2, line.length - 2)}</strong></p>`;
       } else if (line.startsWith('** ')) {
         html += `<p><strong>${line.substring(3)}</strong></p>`;
       } else if (line.startsWith('**Example:** ')) {
@@ -33,8 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
         html += `<h3>Pros:</h3>`;
       } else if (line.startsWith('**Cons:**')) {
         html += `<h3>Cons:</h3>`;
-      } else if (line.startsWith('**')) {
-        html += `<p><strong>${line.substring(2, line.length - 2)}</strong></p>`;
       } else {
         html += `<p>${line}</p>`;
       }

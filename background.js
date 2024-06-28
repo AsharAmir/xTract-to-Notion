@@ -17,7 +17,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   console.log('Context menu item clicked.');
-  //chrome.tabs.sendMessage(tab.id, { action: 'showPendingNotification' });
+  chrome.tabs.sendMessage(tab.id, { action: 'showPendingNotification' });
   if (info.menuItemId === 'summarizeText') {
     const selectedText = info.selectionText.trim();
     if (selectedText.length > 0) {
