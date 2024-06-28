@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summarize for Notion</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.3/css/uikit.min.css" />
+  <style>
+    body {
+      background-color: #202124;
+      color: #ffffff;
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+      min-width: 300px;
+    }
+    .summary-container {
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="uk-container summary-container">
+    <h2>Generated Summary</h2>
+    <div id="summary">Loading...</div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.5/marked.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
