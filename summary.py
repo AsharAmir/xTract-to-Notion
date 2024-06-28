@@ -26,7 +26,7 @@ CORS(app)
 def summarizeText():
     request_data = request.get_json()
     input_text = request_data.get('input_text')
-    prompt = f"Summarize the following text in a structured, point-based format. Include examples, pros, cons, and ensure the summary length is 60% of the original. Also just start writing the summary straight away, NO NEED TO MENTION THAT YOU'RE WRITING A SUMMARY (OR AS AN AI MODEL...). No need to mention summarization as the heading title, just start writing the content.\n\n{input_text}\n\n"
+    prompt = f"Summarize the following text in a structured, point-based format. Include EXAMPLES, PROS AND CONS ONLY IF NECESSARY, and ensure the summary length is 60% of the original. Also just start writing the summary straight away, NO NEED TO MENTION THAT YOU'RE WRITING A SUMMARY (OR AS AN AI MODEL...). No need to mention summarization as the heading title, just start writing the content.\n\n{input_text}\n\n"
     chat_session = model.start_chat(history=[])
     response = chat_session.send_message(prompt)
     #print('Response:', response.text)
