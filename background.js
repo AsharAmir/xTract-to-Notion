@@ -30,7 +30,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 function fetchSummary(inputText, tabId) {
-  const apiUrl = 'http://localhost:5555/summarize'; // Update with your Flask server URL
+  const apiUrl = 'http://localhost:5555/summarize';
 
   fetch(apiUrl, {
     method: 'POST',

@@ -5,28 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Summarize for Notion</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.3/css/uikit.min.css" />
-  <style>
-    body {
-      background-color: #202124;
-      color: #ffffff;
-      padding: 20px;
-      min-width: 300px;
-      font-family: ;
-    }
-    .summary-container {
-      max-width: 100%;
-      overflow-wrap: break-word;
-    }
-    h2 {
-      margin-bottom: 20px;
-      color: #ebe1e1;
-      font-weight: bolder;
-    }
-  </style>
+  <link rel="stylesheet" href="popup.css"> <!-- Include your custom styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome for icons -->
 </head>
 <body>
-  <div class="uk-container summary-container">
+  <div class="summary-container">
     <h2>Generated Summary</h2>
+    <button id="export_notion"><i class="fab fa-notion"></i> Export to Notion</button>
     <div id="summary">Loading...</div>
   </div>
   <script src="popup.js"></script>
