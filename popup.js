@@ -41,8 +41,115 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     return html;
   }
+
+  document.getElementById("export_notion").addEventListener("click", function() {
+    console.log("Exporting summary to Notion");
+    chrome.storage.local.get('summary', function(data) {
+      exportToNotion(data.summary);
+    });
+  });
+
+  async function exportToNotion(summaryText) {
+    const notionApiUrl = 'https://api.notion.com/v1/pages';
+    const notionApiKey = 'secret_cntp5rPMTRHnlzDBFzWBdM3yfn2xLAafHGL0rD23q70'; // Replace with your actual Notion API key
+    const parentPageId = '30f761aa28b548dbba16996579436fa4'; // Replace with your actual parent page ID
+
+    const response = await fetch(notionApiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${notionApiKey}`,
+        'Content-Type': 'application/json',
+        'Notion-Version': '2022-06-28'
+      },
+      body: JSON.stringify({
+        parent: { page_id: parentPageId },
+        properties: {
+          title: {
+            title: [
+              {
+                text: {
+                  content: 'Summary'
+                }
+              }
+            ]
+          }
+        },
+        children: summaryText.split('\n').map(line => {
+          if (line.startsWith('## ')) {
+            return {
+              object: 'block',
+              type: 'heading_2',
+              heading_2: {
+                rich_text: [
+                  {
+                    type: 'text',
+                    text: {
+                      content: line.substring(3)
+                    }
+                  }
+                ]
+              }
+            };
+          } else if (line.startsWith('* ')) {
+            return {
+              object: 'block',
+              type: 'bulleted_list_item',
+              bulleted_list_item: {
+                rich_text: [
+                  {
+                    type: 'text',
+                    text: {
+                      content: line.substring(2)
+                    }
+                  }
+                ]
+              }
+            };
+          } else if (line.startsWith('**')) {
+            return {
+              object: 'block',
+              type: 'paragraph',
+              paragraph: {
+                rich_text: [
+                  {
+                    type: 'text',
+                    annotations: { bold: true },
+                    text: {
+                      content: line.substring(2, line.length - 2)
+                    }
+                  }
+                ]
+              }
+            };
+          } else {
+            return {
+              object: 'block',
+              type: 'paragraph',
+              paragraph: {
+                rich_text: [
+                  {
+                    type: 'text',
+                    text: {
+                      content: line
+                    }
+                  }
+                ]
+              }
+            };
+          }
+        })
+      })
+    });
+
+    if (response.ok) {
+      alert('Summary exported to Notion!');
+    } else {
+      const errorText = await response.text();
+      console.error('Error exporting to Notion:', response.statusText, errorText);
+      alert('Failed to export summary to Notion: ' + response.statusText);
+    }
+  }
 });
 
-
 // NOTIONAPIKEY: secret_cntp5rPMTRHnlzDBFzWBdM3yfn2xLAafHGL0rD23q70
-// NOTIONDBID: 2b29a18565c849e8abbaccadc98bc61e
+// PARENTPAGEID: 30f761aa28b548dbba16996579436fa4
