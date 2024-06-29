@@ -53,110 +53,116 @@ document.addEventListener('DOMContentLoaded', function() {
     const notionApiUrl = 'https://api.notion.com/v1/pages';
     const notionApiKey = 'secret_cntp5rPMTRHnlzDBFzWBdM3yfn2xLAafHGL0rD23q70'; // Replace with your actual Notion API key
     const parentPageId = '30f761aa28b548dbba16996579436fa4'; // Replace with your actual parent page ID
-  
+
     // Split summaryText into chunks of <= 2000 characters
     const chunkedText = splitTextIntoChunks(summaryText, 2000);
-  
+
     // Prepare an array to hold all children blocks
     const childrenBlocks = [];
-  
+
     // Iterate over each chunk of text and create blocks with text styling
     chunkedText.forEach(chunk => {
-      const blocks = formatTextBlocks(chunk);
-      childrenBlocks.push(...blocks);
+        const blocks = formatTextBlocks(chunk);
+        childrenBlocks.push(...blocks);
     });
-  
+
     const response = await fetch(notionApiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${notionApiKey}`,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28'
-      },
-      body: JSON.stringify({
-        parent: { page_id: parentPageId },
-        properties: {
-          title: {
-            title: [
-              {
-                text: {
-                  content: 'Summary'
-                }
-              }
-            ]
-          }
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${notionApiKey}`,
+            'Content-Type': 'application/json',
+            'Notion-Version': '2022-06-28'
         },
-        children: childrenBlocks // Send all children blocks
-      })
+        body: JSON.stringify({
+            parent: { page_id: parentPageId },
+            properties: {
+                title: {
+                    title: [
+                        {
+                            text: {
+                                content: 'Summary'
+                            }
+                        }
+                    ]
+                }
+            },
+            children: childrenBlocks // Send all children blocks
+        })
     });
-  
+
     if (response.ok) {
-      alert('Summary exported to Notion!');
+        alert('Summary exported to Notion!');
     } else {
-      const errorText = await response.text();
-      console.error('Error exporting to Notion:', response.statusText, errorText);
-      alert('Failed to export summary to Notion: ' + response.statusText);
+        const errorText = await response.text();
+        console.error('Error exporting to Notion:', response.statusText, errorText);
+        alert('Failed to export summary to Notion: ' + response.statusText);
     }
-  }
-  
-  // Function to split text into chunks of specified length
-  function splitTextIntoChunks(text, maxLength) {
+}
+
+// Function to split text into chunks of specified length
+function splitTextIntoChunks(text, maxLength) {
     const chunks = [];
-    let i = 0;
-    while (i < text.length) {
-      chunks.push(text.substring(i, i + maxLength));
-      i += maxLength;
+    let start = 0;
+    while (start < text.length) {
+        let end = start + maxLength;
+        if (end < text.length) {
+            end = text.lastIndexOf('\n', end);
+            if (end === -1) end = text.length;
+        }
+        chunks.push(text.substring(start, end));
+        start = end + 1;
     }
     return chunks;
-  }
-  
-  // Function to format text into Notion blocks with appropriate styling
-  function formatTextBlocks(text) {
+}
+
+// Function to format text into Notion blocks with appropriate styling
+function formatTextBlocks(text) {
     const lines = text.split('\n');
     const blocks = [];
-  
+
     lines.forEach(line => {
-      if (line.startsWith('## ')) {
-        blocks.push({
-          object: 'block',
-          type: 'heading_2',
-          heading_2: {
-            rich_text: [{ type: 'text', text: { content: line.substring(3) } }]
-          }
-        });
-      } else if (line.startsWith('* ')) {
-        blocks.push({
-          object: 'block',
-          type: 'bulleted_list_item',
-          bulleted_list_item: {
-            rich_text: [{ type: 'text', text: { content: line.substring(2) } }]
-          }
-        });
-      } else if (line.startsWith('**')) {
-        blocks.push({
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [{
-              type: 'text',
-              annotations: { bold: true },
-              rich_text: { content: line.substring(2, line.length - 2) }
-            }]
-          }
-        });
-      } else {
-        blocks.push({
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [{ type: 'text', text: { content: line } }]
-          }
-        });
-      }
+        if (line.startsWith('## ')) {
+            blocks.push({
+                object: 'block',
+                type: 'heading_2',
+                heading_2: {
+                    rich_text: [{ type: 'text', text: { content: line.substring(3) } }]
+                }
+            });
+        } else if (line.startsWith('* ')) {
+            blocks.push({
+                object: 'block',
+                type: 'bulleted_list_item',
+                bulleted_list_item: {
+                    rich_text: [{ type: 'text', text: { content: line.substring(2) } }]
+                }
+            });
+        } else if (line.startsWith('**')) {
+            blocks.push({
+                object: 'block',
+                type: 'paragraph',
+                paragraph: {
+                    rich_text: [{
+                        type: 'text',
+                        text: { content: line.substring(2, line.length - 2) },
+                        annotations: { bold: true }
+                    }]
+                }
+            });
+        } else {
+            blocks.push({
+                object: 'block',
+                type: 'paragraph',
+                paragraph: {
+                    rich_text: [{ type: 'text', text: { content: line } }]
+                }
+            });
+        }
     });
-  
+
     return blocks;
-  }
+}
+
   
   
   

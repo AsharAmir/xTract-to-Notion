@@ -19,10 +19,17 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   console.log('Context menu item clicked.');
   chrome.tabs.sendMessage(tab.id, { action: 'showPendingNotification' });
   if (info.menuItemId === 'summarizeText') {
-    const selectedText = info.selectionText.trim();
+    let selectedText = info.selectionText.trim();
     if (selectedText.length > 0) {
       console.log('Selected text:', selectedText);
-      fetchSummary(selectedText, tab.id);
+      chrome.tabs.sendMessage(tab.id, { action: 'parseHTML', html: selectedText }, (response) => {
+        if (chrome.runtime.lastError) {
+          console.error('Error parsing HTML:', chrome.runtime.lastError);
+        } else {
+          selectedText = response.text;
+          fetchSummary(selectedText, tab.id);
+        }
+      });
     } else {
       console.error('No text selected.');
     }

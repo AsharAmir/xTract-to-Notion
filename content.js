@@ -9,6 +9,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'parseHTML') {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(request.html, 'text/html');
+    sendResponse({ text: doc.body.textContent || "" });
+  }
+});
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'showNotification') {
     const notificationElement = document.createElement('div');
