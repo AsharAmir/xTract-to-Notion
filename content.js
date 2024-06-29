@@ -15,10 +15,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     notificationElement.style.position = 'fixed';
     notificationElement.style.top = '10px';
     notificationElement.style.right = '10px';
-    notificationElement.style.background = '#8c8888';
-    notificationElement.style.border = '1px solid #cccccc';
-    notificationElement.style.padding = '10px';
+    notificationElement.style.background = '#3c4043';
+    notificationElement.style.border = '1px solid #5f6368';
+    notificationElement.style.padding = '20px';
+    notificationElement.style.borderRadius = '5px';
     notificationElement.style.zIndex = '9999';
+    notificationElement.style.color = '#ffffff';
+    notificationElement.style.fontFamily = 'Arial, sans-serif';
     notificationElement.textContent = `Summary Generated, check the summary extension to view!`;
 
     document.body.appendChild(notificationElement);
@@ -35,10 +38,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     notificationElement.style.position = 'fixed';
     notificationElement.style.top = '10px';
     notificationElement.style.right = '10px';
-    notificationElement.style.background = '#8c8888';
-    notificationElement.style.border = '1px solid #cccccc';
-    notificationElement.style.padding = '10px';
+    notificationElement.style.background = '#3c4043';
+    notificationElement.style.border = '1px solid #5f6368';
+    notificationElement.style.padding = '20px';
+    notificationElement.style.borderRadius = '5px';
     notificationElement.style.zIndex = '9999';
+    notificationElement.style.color = '#ffffff';
+    notificationElement.style.fontFamily = 'Arial, sans-serif';
     notificationElement.textContent = `Summary is being generated. Please wait!`;
 
     document.body.appendChild(notificationElement);
