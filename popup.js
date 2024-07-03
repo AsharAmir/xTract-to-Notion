@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const summaryElement = document.getElementById('summary');
     if (summaryElement) {
       summaryElement.innerHTML = renderToHTML(summaryText);
+      //get the first line of the summary to get the title
+      smmry_title = summaryText.split('\n')[0];
     } else {
       console.error('Summary element not found in popup HTML.');
     }
@@ -80,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: [
                         {
                             text: {
-                                content: 'Summary'
+                                content: smmry_title
                             }
                         }
                     ]
@@ -91,7 +93,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (response.ok) {
-        alert('Summary exported to Notion!');
+        //chrome.tabs.sendMessage(tabId, { action: 'notionGenerated' });
+        //get new page url
+        const responseJson = await response.json();
+        const notionURL = `https://www.notion.so/${responseJson.id.replace(/-/g, '')}`;
+        chrome.tabs.create({ url: notionURL });
+        console.log(notionURL);
+        //alert('Summary exported to Notion!');
     } else {
         const errorText = await response.text();
         console.error('Error exporting to Notion:', response.statusText, errorText);

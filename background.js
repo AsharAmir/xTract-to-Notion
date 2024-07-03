@@ -63,8 +63,6 @@ function fetchSummary(inputText, tabId) {
       chrome.tabs.sendMessage(tabId, { action: 'showNotification', summary: data.summary });
     }
     );
-    //openSummaryPopUp(data.summary);
-    //alert("Summary Generated, please open the extension window to view.")
   })
   .catch(error => {
     console.error('Error fetching summary:', error);
