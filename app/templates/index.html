@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarizer</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <script>
+        function summarizeText() {
+            var text = document.getElementById('text').value;
+            fetch('https://smmry-ext.onrender.com/summarize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ input_text: text })
+            }).then(response => response.json()).then(data => {
+                // console.log(text);
+                // console.log(data.summary);
+                alert(data.summary);
+            }).catch(error => {
+                alert('Error generating summary.');
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <form class="form" action="javascript:void(0);">
+            <p class="field required">
+                <label class="label required" for="text">Enter text to summarize</label>
+                <textarea class="text-input" id="text" name="text" rows="4" required></textarea>
+            </p>
+            <p class="field">
+                <input class="button" type="submit" value="Summarize" onclick="summarizeText()">
+            </p>
+        </form>
+    </div>
+</body>
+</html>

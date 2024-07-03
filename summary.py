@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import os
 import google.generativeai as genai
@@ -21,6 +21,10 @@ model = genai.GenerativeModel(
 
 app = Flask(__name__)
 CORS(app)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/summarize', methods=['POST'])
 def summarizeText():
