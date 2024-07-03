@@ -3,9 +3,9 @@ from flask_cors import CORS
 import os
 import google.generativeai as genai
 
-#genai.configure(api_key="AIzaSyBSD1sFlgCwPIOH79HLI9dZC5Yi5wz3pgw")
-genai.configure(api_key="AIzaSyApqyrYE3TfP8U0KaejCu7kvUNVNnNE_-Y")
-
+#genai.configure(api_key="AIzaSyBSD1sFlgCwPIOH79HLI9dZC5Yi5wz3pgw") #personal
+genai.configure(api_key="AIzaSyApqyrYE3TfP8U0KaejCu7kvUNVNnNE_-Y") #NU domain
+ 
 # Create the model
 generation_config = {
     "temperature": 1,
