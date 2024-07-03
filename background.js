@@ -37,7 +37,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 function fetchSummary(inputText, tabId) {
-  const apiUrl = 'http://localhost:5555/summarize';
+  // const apiUrl = 'http://localhost:5555/summarize';
+  const apiUrl = 'https://xtract-smmry-e9715027adfc.herokuapp.com/summarize';
 
   fetch(apiUrl, {
     method: 'POST',
