@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function exportToNotion(summaryText) {
     const notionApiUrl = 'https://api.notion.com/v1/pages';
-    const notionApiKey = 'secret_cntp5rPMTRHnlzDBFzWBdM3yfn2xLAafHGL0rD23q70'; // Replace with your actual Notion API key
+    const notionApiKey = 'secret_cntp5rPMTRHnlzDBFzWBdM3yfn2xLAafHGL0rD23q70'; // Replace with your actual Notion API key 
     const parentPageId = '30f761aa28b548dbba16996579436fa4'; // Replace with your actual parent page ID
 
     // Split summaryText into chunks of <= 2000 characters
