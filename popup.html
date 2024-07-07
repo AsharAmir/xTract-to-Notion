@@ -10,13 +10,35 @@
 </head>
 <body>
   <div class="summary-container">
-    <h2>Generated Summary</h2>
-    <img src = "https://img.icons8.com/?size=100&id=82535&format=png&color=000000" alt = "settings">
-    <button id="export_notion">
-      <img src="https://img.icons8.com/?size=100&id=nvtEH6DpqruC&format=png&color=000000" alt="Icon">
-      <i class="fab fa-notion"></i> Export to Notion
-    </button>
-    <div id="summary">Loading...</div>
+    <div id="summaryPage">
+      <div class="header">
+        <h2>Generated Summary</h2>
+        <button id="settingsBtn">
+          <img src="https://img.icons8.com/?size=24&id=82535&format=png&color=FFFFFF" alt="Settings">
+        </button>
+      </div>
+      <button id="export_notion">
+        <img src="https://img.icons8.com/?size=24&id=nvtEH6DpqruC&format=png&color=000000" alt="Icon">
+        <i class="fab fa-notion"></i> Export to Notion
+      </button>
+      <div id="summary">Loading...</div>
+    </div>
+    <div id="settingsPage" style="display: none;">
+      <button id="closeSettingsBtn">
+        <img src="https://img.icons8.com/?size=24&id=6483&format=png&color=FFFFFF" alt="Close">
+      </button>
+      <div class="settings-panel">
+        <div class="setting-item">
+          <label for="notionApiKey">Notion API Key:</label>
+          <input type="text" id="notionApiKey">
+        </div>
+        <div class="setting-item">
+          <label for="parentPageKey">Parent Page API Key:</label>
+          <input type="text" id="parentPageKey">
+        </div>
+        <button id="confirmSettings">Confirm</button>
+      </div>
+    </div>
   </div>
   <script src="popup.js"></script>
 </body>

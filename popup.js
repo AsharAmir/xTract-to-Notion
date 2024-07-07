@@ -8,6 +8,40 @@ document.addEventListener('DOMContentLoaded', function() {
     displaySummary(data.summary);
   });
 
+  const settingsBtn = document.getElementById('settingsBtn');
+  const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+  const summaryPage = document.getElementById('summaryPage');
+  const settingsPage = document.getElementById('settingsPage');
+  const confirmSettingsBtn = document.getElementById('confirmSettings');
+
+  settingsBtn.addEventListener('click', function () {
+    summaryPage.style.display = 'none';
+    settingsPage.style.display = 'block';
+  });
+  closeSettingsBtn.addEventListener('click', function () {
+    settingsPage.style.display = 'none';
+    summaryPage.style.display = 'block';
+  });
+
+  confirmSettingsBtn.addEventListener('click', function () {
+    const notionApiKey = document.getElementById('notionApiKey').value.trim();
+    const parentPageKey = document.getElementById('parentPageKey').value.trim();
+
+    if (notionApiKey === '' || parentPageKey === '') {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    chrome.storage.local.set({
+      notionApiKey: notionApiKey,
+      parentPageKey: parentPageKey
+    })
+    settingsPage.style.display = 'none';
+    summaryPage.style.display = 'block';
+  });
+
+
+
   function displaySummary(summaryText) {
     const summaryElement = document.getElementById('summary');
     if (summaryElement) {
@@ -53,8 +87,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function exportToNotion(summaryText) {
     const notionApiUrl = 'https://api.notion.com/v1/pages';
-    const notionApiKey = 'secret_cntp5rPMTRHnlzDBFzWBdM3yfn2xLAafHGL0rD23q70'; // Replace with your actual Notion API key 
-    const parentPageId = '30f761aa28b548dbba16996579436fa4'; // Replace with your actual parent page ID
+    // const notionApiKey = 'secret_cntp5rPMTRHnlzDBFzWBdM3yfn2xLAafHGL0rD23q70'; // Replace with your actual Notion API key 
+    // const parentPageKey = '30f761aa28b548dbba16996579436fa4'; // Replace with your actual parent page ID
+    // chrome.storage.local.get(['notionApiKey', 'parentPageKey'], function(data) {
+    //   const notionApiKey = data.notionApiKey;
+    //   const parentPageKey = data.parentPageKey;
+    //   console.log(notionApiKey);
+    //   console.log(parentPageKey);
+    // });
 
     // Split summaryText into chunks of <= 2000 characters
     const chunkedText = splitTextIntoChunks(summaryText, 2000);
@@ -76,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'Notion-Version': '2022-06-28'
         },
         body: JSON.stringify({
-            parent: { page_id: parentPageId },
+            parent: { page_id: parentPageKey },
             properties: {
                 title: {
                     title: [
