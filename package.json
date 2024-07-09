@@ -1,0 +1,12 @@
+{
+    "name": "cron-job",
+    "version": "1.0.0",
+    "main": "cron.js",
+    "scripts": {
+      "start": "node cron.js"
+    },
+    "dependencies": {
+      "cron": "^1.8.2"
+    }
+  }
+  
