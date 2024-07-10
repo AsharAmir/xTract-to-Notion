@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import os
 import google.generativeai as genai
+from apscheduler.schedulers.background import BackgroundScheduler
+import requests
 
 genai.configure(api_key="AIzaSyApqyrYE3TfP8U0KaejCu7kvUNVNnNE_-Y") #NU domain
  
@@ -34,10 +36,21 @@ def summarizeText():
     response = chat_session.send_message(prompt)
     return jsonify({'summary': response.text})
 
+def job_func():
+    try:
+        response = requests.get('https://smmry-ext.onrender.com/summarize')
+        print(f"Response: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Error: {e}")
+
 if __name__ == "__main__":
     #USE THE BELOW FOR LOCALHOST
     #app.run(port=5555, debug=True) 
     
     #use the below for HEROKU
+
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(func=job_func, trigger="interval", minutes=14)
+    scheduler.start()
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=True, host="0.0.0.0", port=port)

@@ -1,19 +1,19 @@
-services:
-  - type: web
-    name: smmry-ext
-    env: docker
-    plan: free
-    dockerfilePath: Dockerfile
-    envVars:
-      - key: PORT
-        value: 5000
+# services:
+#   - type: web
+#     name: smmry-ext
+#     env: docker
+#     plan: free
+#     dockerfilePath: Dockerfile
+#     envVars:
+#       - key: PORT
+#         value: 5000
 
-  - type: cron
-    name: cron
-    env: docker
-    plan: free
-    dockerfilePath: Dockerfile
-    envVars:
-      - key: BACKEND_URL
-        value: https://smmry-ext.onrender.com/summarize
-    schedule: "*/14 * * * *"
+#   - type: cron
+#     name: cron
+#     env: docker
+#     plan: free
+#     dockerfilePath: Dockerfile
+#     envVars:
+#       - key: BACKEND_URL
+#         value: https://smmry-ext.onrender.com/summarize
+#     schedule: "*/14 * * * *"
