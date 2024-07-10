@@ -15,6 +15,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const confirmSettingsBtn = document.getElementById('confirmSettings');
 
   settingsBtn.addEventListener('click', function () {
+
+    chrome.storage.local.get(['notionApiKey', 'parentPageKey'], function(data) {
+      const notionApiKey = data.notionApiKey;
+      const parentPageKey = data.parentPageKey;
+      if (notionApiKey !== undefined && parentPageKey !== undefined) {
+        document.getElementById('notionApiKey').value = notionApiKey;
+        document.getElementById('parentPageKey').value = parentPageKey;
+      }
+    });
+
     summaryPage.style.display = 'none';
     settingsPage.style.display = 'block';
   });
@@ -87,65 +97,66 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function exportToNotion(summaryText) {
     const notionApiUrl = 'https://api.notion.com/v1/pages';
-    chrome.storage.local.get(['notionApiKey', 'parentPageKey'], function(data) {
+
+    // ADD A WAIT BEFORE FETCHING!!
+    chrome.storage.local.get(['notionApiKey', 'parentPageKey'], async function(data) {
       const notionApiKey = data.notionApiKey;
       const parentPageKey = data.parentPageKey;
-      console.log(notionApiKey);
-      console.log(parentPageKey);
-    });
 
-    // Split summaryText into chunks of <= 2000 characters
-    const chunkedText = splitTextIntoChunks(summaryText, 2000);
+      if (!notionApiKey || !parentPageKey) {
+        console.error('API key or Parent Page ID is missing');
+        return;
+      }
 
-    // Prepare an array to hold all children blocks
-    const childrenBlocks = [];
+      console.log("Using API Key:", notionApiKey);
+      console.log("Using Parent Page ID:", parentPageKey);
 
-    // Iterate over each chunk of text and create blocks with text styling
-    chunkedText.forEach(chunk => {
+      const chunkedText = splitTextIntoChunks(summaryText, 2000); //cuz of the api ratelimit.
+
+  
+      const childrenBlocks = [];
+      chunkedText.forEach(chunk => {
         const blocks = formatTextBlocks(chunk);
         childrenBlocks.push(...blocks);
-    });
+      });
 
-    const response = await fetch(notionApiUrl, {
+      const response = await fetch(notionApiUrl, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${notionApiKey}`,
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28'
+          'Authorization': `Bearer ${notionApiKey}`,
+          'Content-Type': 'application/json',
+          'Notion-Version': '2022-06-28'
         },
         body: JSON.stringify({
-            parent: { page_id: parentPageKey },
-            properties: {
-                title: {
-                    title: [
-                        {
-                            text: {
-                                content: smmry_title
-                            }
-                        }
-                    ]
+          parent: { page_id: parentPageKey },
+          properties: {
+            title: {
+              title: [
+                {
+                  text: {
+                    content: smmry_title
+                  }
                 }
-            },
-            children: childrenBlocks // Send all children blocks
+              ]
+            }
+          },
+          children: childrenBlocks 
         })
-    });
+      });
 
-    if (response.ok) {
-        //chrome.tabs.sendMessage(tabId, { action: 'notionGenerated' });
-        //get new page url
+      if (response.ok) {
         const responseJson = await response.json();
         const notionURL = `https://www.notion.so/${responseJson.id.replace(/-/g, '')}`;
         chrome.tabs.create({ url: notionURL });
-        console.log(notionURL);
-        //alert('Summary exported to Notion!');
-    } else {
+        console.log('Notion Page URL:', notionURL);
+      } else {
         const errorText = await response.text();
         console.error('Error exporting to Notion:', response.statusText, errorText);
         alert('Failed to export summary to Notion: ' + response.statusText);
-    }
-}
+      }
+    });
+  }
 
-// Function to split text into chunks of specified length
 function splitTextIntoChunks(text, maxLength) {
     const chunks = [];
     let start = 0;
@@ -161,7 +172,7 @@ function splitTextIntoChunks(text, maxLength) {
     return chunks;
 }
 
-// Function to format text into Notion blocks with appropriate styling
+
 function formatTextBlocks(text) {
     const lines = text.split('\n');
     const blocks = [];
