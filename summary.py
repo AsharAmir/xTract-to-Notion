@@ -38,7 +38,9 @@ def summarizeText():
 
 def job_func():
     try:
-        response = requests.get('https://smmry-ext.onrender.com/summarize')
+        headers = {'Content-Type': 'application/json'}
+        data = {'input_text': 'test'}
+        response = requests.post('https://smmry-ext.onrender.com/summarize', headers=headers, json=data)
         print(f"Response: {response.status_code}")
     except requests.RequestException as e:
         print(f"Error: {e}")
