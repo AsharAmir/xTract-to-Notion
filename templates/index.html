@@ -7,6 +7,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="static/index.css">
     <script>
+        
         function summarizeText() {
             var text = document.getElementById('text').value;
             fetch('https://smmry-ext.onrender.com/summarize', {
@@ -16,13 +17,15 @@
                 },
                 body: JSON.stringify({ input_text: text })
             }).then(response => response.json()).then(data => {
-                // console.log(text);
-                // console.log(data.summary);
                 alert(data.summary);
             }).catch(error => {
                 alert('Error generating summary.');
                 console.error('Error:', error);
             });
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
         }
     </script>
 </head>
@@ -40,6 +43,15 @@
     </div>
     <div class="footer">
         Made with <span style="color: #e25555;">&hearts;</span> by <a href="https://github.com/AsharAmir" target="_blank">Ashar</a>
+    </div>
+
+    <div class="popup" id="popup">
+        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <img src="../logo.png" alt="Extension">
+        <div class="content">
+            <h5>Get the Chrome Extension!</h5>
+            <p>Make your summarizing experience even better with our Chrome <a href="https://github.com/AsharAmir" target="_blank" style="color: #e25555;">extension</a>.</p>
+        </div>
     </div>
 </body>
 </html>
