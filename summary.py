@@ -52,7 +52,7 @@ if __name__ == "__main__":
     #use the below for HEROKU
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(func=job_func, trigger="interval", minutes=14)
+    scheduler.add_job(func=job_func, trigger="interval", minutes=10)
     scheduler.start()
     print("Scheduler started")
     port = int(os.environ.get("PORT", 5000))
