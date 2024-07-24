@@ -1,6 +1,6 @@
 # xTract to Notion - Chrome Extension
 
-![demo](https://gifyu.com/image/S5N8U)
+![demo](https://s12.gifyu.com/images/S5N8U.gif)
 
 xTract to Notion extension allows you to quickly export webpage summaries directly to Notion.
 
