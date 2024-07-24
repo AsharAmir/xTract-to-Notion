@@ -5,7 +5,7 @@ import google.generativeai as genai
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 
-genai.configure(api_key="AIzaSyApqyrYE3TfP8U0KaejCu7kvUNVNnNE_-Y") #NU domain
+genai.configure(api_key="NOTION_API_KEY") #NU domain
  
 # Create the model
 generation_config = {
