@@ -7,7 +7,9 @@ import requests
 
 notion_api_key = os.getenv('NOTION_API_KEY')
 
-genai.configure(api_key=notion_api_key) #NU domain
+gemini_api_key = os.getenv('GEMINI_API_KEY')
+
+genai.configure(api_key=gemini_api_key) #NU domain
  
 # Create the model
 generation_config = {
